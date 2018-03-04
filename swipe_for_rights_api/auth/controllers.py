@@ -4,8 +4,11 @@ from apistar.types import Settings
 from apistar_jwt.token import JWT
 from apistar_jwt.authentication import JWTAuthentication
 from passlib.hash import pbkdf2_sha256
+
+from swipe_for_rights_api.database.models.user import User
+
 from .types import Login, Address
-from database.models.user import User
+
 
 def create_token(secret, payload):
     token = JWT.encode(payload, secret=secret)
