@@ -31,7 +31,7 @@ docker-compose run api test
 ## Architecture
 This project is built using [API Star](https://github.com/encode/apistar), an API library specifically tailored to leverage types and asynchrony in Python3.  Legislative information is copied from the [OpenStates API](http://docs.openstates.org/).
 
-This also prefers [`setup.cfg` to store package information](http://setuptools.readthedocs.io/en/latest/setuptools.html#configuring-setup-using-setup-cfg-files), including install (`install_requires`) and test (`extra_requires['test']`) dependencies.
+This also prefers [`setup.cfg` to store package information](http://setuptools.readthedocs.io/en/latest/setuptools.html#configuring-setup-using-setup-cfg-files), including install (`install_requires`) and dev (`extra_requires['dev']`) dependencies.
 
 ## License
 [MIT](LICENSE) © 2018 Corey Rice

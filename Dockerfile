@@ -7,7 +7,7 @@ COPY setup.cfg setup.py /app/
 RUN mkdir /app/swipe_for_rights_api
 
 RUN pip3 install -U pip \
-    && pip3 install -e .[test]
+    && pip3 install -e .[dev]
 
 COPY app.py tests.py /app/
 COPY ./swipe_for_rights_api/ /app/swipe_for_rights_api/
