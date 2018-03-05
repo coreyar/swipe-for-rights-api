@@ -1,5 +1,6 @@
 from apistar import typesystem
 
+
 class Login(typesystem.Object):
     properties = {
         'email': typesystem.string(max_length=100),  # Use lowercase functions for inline declarations.
@@ -13,4 +14,3 @@ class Address(typesystem.Object):
         'region': typesystem.string(max_length=2),
         'postal_code': typesystem.string(max_length=5),
     }
-

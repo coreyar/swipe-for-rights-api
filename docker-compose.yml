@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  db:
+    image: mongo:3.0
+    ports:
+      - "27017:27017"
+
+  api:
+    build: .
+    command: ["run", "--host", "0.0.0.0"]
+    depends_on:
+      - db
+    environment:
+      - DEBUG=True
+      - OPEN_STATES_API_KEY
+      # Just a dummy key
+      - SWIPE_FOR_RIGHTS_JWT_SECRET_KEY='QXp4Z83.%2F@JBiaPZ8T9YDwoasn[dn)cZ=fE}KqHMJPNka3QyPNq^KnMqL^oCsU9BC?.f9,oF2.2t4oN?[g%iq89(+'
+      - SWIPE_FOR_RIGHTS_MONGO_URL=mongodb://db:27017/swipe_for_rights
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./swipe_for_rights_api:/app/swipe_for_rights_api"
+      - "./app.py:/app/app.py"
+      - "./tests.py:/app/tests.py"

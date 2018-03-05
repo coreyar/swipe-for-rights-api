@@ -1,7 +1,11 @@
-from mongoengine import Document, StringField
-from mongoengine.document import BaseDocument
-from apistar import typesystem
 import typing
+
+from apistar import typesystem
+from mongoengine import (
+    Document,
+    StringField,
+)
+from mongoengine.document import BaseDocument
 
 class UserModel(Document):
     email = StringField(required=True)
@@ -11,7 +15,7 @@ class UserModel(Document):
     region = StringField()
     postal_code = StringField()
 
-    
+
 
 class UserType(typesystem.Object):
     properties = {
@@ -41,14 +45,14 @@ def mongo_star(fields):
         pass
         for field in fields:
             locals()[field['name']] = model_type(field['type'], field['required'])
-    
+
     for field in fields:
         TypeObject.properties[field['name']] = typesystem_type(field['type'], field['max_length'])
 
     class DocumentWithType(object):
         model = MongoDocument
         types = TypeObject
-    
+
     return DocumentWithType
 
 
@@ -62,5 +66,3 @@ user_fields = [
 ]
 
 User = mongo_star(user_fields)
-    
-
