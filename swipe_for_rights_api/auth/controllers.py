@@ -30,7 +30,7 @@ def login(login: Login, settings: Settings):
 
 def signup(login: Login, settings: Settings):
     email = login['email'].lower()
-    user = User.objects(email=email).first()
+    user = User.model.objects(email=email).first()
     if not user:
         hash = pbkdf2_sha256.hash(login['password'])
         user = User.model(email=email, password=hash).save()
