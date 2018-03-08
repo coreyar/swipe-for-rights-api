@@ -1,13 +1,27 @@
-import base64
 import os
 
-from apistar import http
-from apistar.authentication import Authenticated
-import pyopenstates
+from apistar.permissions import IsAuthenticated
+
+from .authentication import (
+    Issue8JWTAuthentication,
+    UnAuthentication
+)
+
+
+DEFAULT_PERMISSIONS = (
+    IsAuthenticated(),
+)
+
+# Public endpoints don't require any permissions
+PUBLIC_PERMISSIONS = tuple()
 
 
 settings = {
+    'AUTHENTICATION': (
+        Issue8JWTAuthentication(),
+    ),
+    'PERMISSIONS': DEFAULT_PERMISSIONS,
     'JWT': {
         'SECRET': os.environ['SWIPE_FOR_RIGHTS_JWT_SECRET_KEY']
-    }
+    },
 }
