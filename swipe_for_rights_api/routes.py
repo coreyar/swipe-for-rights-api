@@ -20,7 +20,6 @@ def welcome(name=None):
     return {'message': 'Welcome to API Star, %s!' % name}
 
 routes = [
-    Route('/', 'GET', welcome),
     Include('/', auth_routes),
     Include('/docs', docs_urls),
     Include('/bills', bill_routes),
