@@ -5,55 +5,50 @@ from apistar import (
     annotate,
 )
 from apistar.exceptions import NotFound
+from apistar.interfaces import Auth
 
 from swipe_for_rights_api.helpers import stringify_all_dates
 from swipe_for_rights_api.database.models.votes import UserVoteModel
-from swipe_for_rights_api.settings import DEFAULT_PERMISSIONS
 from .types import UserVoteType
-from .permissions import (
-    UserVoteRead,
-    UserVoteWrite,
-)
 
 
-@annotate(
-    permissions=(*DEFAULT_PERMISSIONS, UserVoteRead(),)
-)
-def get_votes(user_id: str) -> typing.List[UserVoteType]:
-    """Get all of a User's votes."""
-    return UserVoteModel.objects(user_id=user_id).to_json()
+def get_votes(auth: Auth) -> typing.List[UserVoteType]:
+    """Get all of the authenticated User's votes."""
+    return UserVoteModel.objects(user_id=auth.user['id']).to_json()
 
 
-@annotate(
-    permissions=(*DEFAULT_PERMISSIONS, UserVoteRead(),)
-)
-def get_vote(user_id: str, bill_id: str) -> UserVoteType:
+def get_vote(auth: Auth, bill_id: str) -> UserVoteType:
     """Get a User's vote for a Bill.
 
     This 404s if the User has not set a Vote for the Bill yet.
     """
     try:
-        return UserVoteModel.objects(
-            user_id=user_id, bill_id=bill_id
-        ).get().to_json()
+        vote = UserVoteModel.objects(
+            user_id=auth.user['id'],
+            bill_id=bill_id,
+        ).get()
+        return vote.to_json()
     except UserVoteModel.DoesNotExist:
         raise NotFound()
 
 
-@annotate(
-    permissions=(*DEFAULT_PERMISSIONS, UserVoteWrite(),)
-)
-def set_vote(user_id: str, bill_id: str, supports: bool):
+def set_vote(auth: Auth, vote: UserVoteType):
     """Set a User's vote for a Bill.
 
     The existing UserVote for the Bill will be overwritten, if set.
     """
     try:
-        vote = UserVoteModel.objects(user_id=user_id, bill_id=bill_id).get()
+        vote_model = UserVoteModel.objects(
+            user_id=auth.user['id'],
+            bill_id=vote['bill_id'],
+        ).get()
     except UserVoteModel.DoesNotExist:
-        vote = UserVoteModel(user_id=user_id, bill_id=bill_id)
+        vote_model = UserVoteModel(
+            user_id=auth.user['id'],
+            bill_id=vote['bill_id'],
+        )
 
-    vote.supports = supports
-    vote.save()
+    vote_model.supports = vote['supports']
+    vote_model.save()
 
-    return Response(content={'id': str(vote.id)}, status=201)
+    return Response(status=201)

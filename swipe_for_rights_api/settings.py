@@ -8,10 +8,6 @@ from .authentication import (
 )
 
 
-DEFAULT_PERMISSIONS = (
-    IsAuthenticated(),
-)
-
 # Public endpoints don't require any permissions
 PUBLIC_PERMISSIONS = tuple()
 
@@ -20,7 +16,9 @@ settings = {
     'AUTHENTICATION': (
         Issue8JWTAuthentication(),
     ),
-    'PERMISSIONS': DEFAULT_PERMISSIONS,
+    'PERMISSIONS': (
+        IsAuthenticated(),
+    ),
     'JWT': {
         'SECRET': os.environ['SWIPE_FOR_RIGHTS_JWT_SECRET_KEY']
     },
