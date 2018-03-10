@@ -13,12 +13,6 @@ from .bills.routes import bill_routes
 from .votes.routes import vote_routes
 
 
-@public()
-def welcome(name=None):
-    if name is None:
-        return {'message': 'Welcome to API Star!'}
-    return {'message': 'Welcome to API Star, %s!' % name}
-
 routes = [
     Include('/', auth_routes),
     Include('/docs', docs_urls),

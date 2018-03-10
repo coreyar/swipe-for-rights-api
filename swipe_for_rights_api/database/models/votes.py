@@ -1,16 +1,13 @@
 from mongoengine import (
     BooleanField,
-    Document,
-    ReferenceField,
+    EmbeddedDocument,
     StringField,
 )
-from mongoengine.document import BaseDocument
 
 
-class UserVoteModel(Document):
+class VoteModel(EmbeddedDocument):
     """A record of a User's support of a Bill"""
-    # A reference to a User
-    user_id = StringField(required=True)
     # By id - we're not storing Bills yet
     bill_id = StringField(required=True)
+    # True if they support, False if not
     supports = BooleanField(required=True)
