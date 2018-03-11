@@ -14,3 +14,9 @@ class Address(typesystem.Object):
         'region': typesystem.string(max_length=2),
         'postal_code': typesystem.string(max_length=5),
     }
+
+class UserType(typesystem.Object):
+    properties = {
+        **Login.properties,
+        **Address.properties
+    }
