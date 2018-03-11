@@ -1,8 +1,11 @@
 from mongoengine import (
     Document,
+    EmbeddedDocumentListField,
     StringField,
 )
-from mongoengine.document import BaseDocument
+
+from .votes import VoteModel
+
 
 class UserModel(Document):
     email = StringField(required=True)
@@ -11,3 +14,4 @@ class UserModel(Document):
     locality = StringField()
     region = StringField()
     postal_code = StringField()
+    votes = EmbeddedDocumentListField(document_type=VoteModel)

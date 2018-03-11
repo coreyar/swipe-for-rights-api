@@ -18,6 +18,7 @@ to build and run the app.  The following resources should now be available:
 
 * Interactive API Documentation - http://localhost:8080/docs/
 
+*Note*: For most endpoints you'll have to manually `login` and use the generated JWT token in the **Authentication** section of the interactive API documentation.
 
 ## Testing
 Test are run inside of the `api` docker container (make sure your `OPEN_STATES_API_KEY` is set) using API Star's built-in testing framework [py<span style="color: deepskyblue">test</span>](https://docs.pytest.org/en/latest/).
