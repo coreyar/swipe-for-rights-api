@@ -9,7 +9,8 @@ RUN mkdir /app/swipe_for_rights_api
 RUN pip3 install -U pip \
     && pip3 install -e .[dev]
 
-COPY app.py tests.py /app/
+COPY app.py /app/
+COPY ./tests /app/tests
 COPY ./swipe_for_rights_api/ /app/swipe_for_rights_api/
 
 ENTRYPOINT ["apistar"]

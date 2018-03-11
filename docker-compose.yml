@@ -22,4 +22,4 @@ services:
     volumes:
       - "./swipe_for_rights_api:/app/swipe_for_rights_api"
       - "./app.py:/app/app.py"
-      - "./tests.py:/app/tests.py"
+      - "./tests:/app/tests"

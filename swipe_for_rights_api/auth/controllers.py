@@ -6,6 +6,7 @@ from apistar_jwt.authentication import JWTAuthentication
 from passlib.hash import pbkdf2_sha256
 
 from swipe_for_rights_api.database.models.user import User
+from swipe_for_rights_api.annotations import public
 
 from .types import Login, Address
 
@@ -14,7 +15,7 @@ def create_token(secret, payload):
     token = JWT.encode(payload, secret=secret)
     return token
 
-
+@public()
 def login(login: Login, settings: Settings):
     email = login['email']
     user = User.model.objects(email=email.lower()).first()
@@ -28,6 +29,7 @@ def login(login: Login, settings: Settings):
         return Response('Incorrect username or password.', status=401)
     return Response('User does not exist.', status=401)
 
+@public()
 def signup(login: Login, settings: Settings):
     email = login['email'].lower()
     user = User.model.objects(email=email).first()
@@ -40,11 +42,11 @@ def signup(login: Login, settings: Settings):
         return Response(token, status=201)
     return Response('User exists.', status=401)
 
-@annotate(authentication=[JWTAuthentication()])
 def me(request: http.Request, auth: Auth,  address: Address,):
     # TODO - Write a decorator for acceptable HTTP Methods
     if request.method == 'GET':
         return Response(auth.user, status=201)
+    # TODO: Quick switch to PATCH
     if request.method == 'POST':
         user = User.objects(id=auth.user['id']).first()
         user.street_address = address['street_address']
