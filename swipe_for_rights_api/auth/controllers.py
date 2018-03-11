@@ -5,10 +5,10 @@ from apistar_jwt.token import JWT
 from apistar_jwt.authentication import JWTAuthentication
 from passlib.hash import pbkdf2_sha256
 
-from swipe_for_rights_api.database.models.user import User
+from swipe_for_rights_api.database.models.user import UserModel as User
 from swipe_for_rights_api.annotations import public
 
-from .types import Login, Address
+from .types import Login, Address, UserType
 
 
 def create_token(secret, payload):
@@ -18,26 +18,33 @@ def create_token(secret, payload):
 @public()
 def login(login: Login, settings: Settings):
     email = login['email']
-    user = User.model.objects(email=email.lower()).first()
+    user = User.objects(email=email.lower()).first()
     if user:
         valid = pbkdf2_sha256.verify(login['password'], user['password'])
         if valid:
             secret = settings['JWT'].get('SECRET')
             payload = {'email': email, 'id': user.id.__str__()}
             token = create_token(secret, payload)
-            return Response({'token': token, 'user': user}, status=201)
+            return Response({'token': token, 'user': user.to_json()}, status=201)
         return Response('Incorrect username or password.', status=401)
     return Response('User does not exist.', status=401)
 
 @public()
-def signup(login: Login, settings: Settings):
-    email = login['email'].lower()
-    user = User.model.objects(email=email).first()
-    if not user:
-        hash = pbkdf2_sha256.hash(login['password'])
-        user = User.model(email=email, password=hash).save()
+def signup(user: UserType, settings: Settings):
+    email = user['email'].lower()
+    exists = User.objects(email=email).first()
+    if not exists:
+        hash = pbkdf2_sha256.hash(user['password'])
+        createdUser = User(
+            email=email, 
+            password=hash,
+            locality=user['locality'],
+            street_address=user['street_address'],
+            region=user['region'],
+            postal_code=user['postal_code']
+        ).save()
         secret = settings['JWT'].get('SECRET')
-        payload = {'email': email, 'id': user.id.__str__()}
+        payload = {'email': email, 'id': createdUser.id.__str__()}
         token = create_token(secret, payload)
         return Response(token, status=201)
     return Response('User exists.', status=401)
