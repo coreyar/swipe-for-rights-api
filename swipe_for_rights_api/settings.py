@@ -1,12 +1,7 @@
 import os
 
 from apistar.permissions import IsAuthenticated
-
-from .authentication import (
-    Issue8JWTAuthentication,
-    UnAuthentication
-)
-
+from apistar_jwt.authentication import JWTAuthentication
 
 # Public endpoints don't require any permissions
 PUBLIC_PERMISSIONS = tuple()
@@ -14,7 +9,7 @@ PUBLIC_PERMISSIONS = tuple()
 
 settings = {
     'AUTHENTICATION': (
-        Issue8JWTAuthentication(),
+        JWTAuthentication(),
     ),
     'PERMISSIONS': (
         IsAuthenticated(),

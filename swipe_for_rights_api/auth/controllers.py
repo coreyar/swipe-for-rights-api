@@ -2,7 +2,6 @@ from apistar import http, Response, typesystem, annotate
 from apistar.interfaces import Auth
 from apistar.types import Settings
 from apistar_jwt.token import JWT
-from apistar_jwt.authentication import JWTAuthentication
 from passlib.hash import pbkdf2_sha256
 
 from swipe_for_rights_api.database.models.user import UserModel as User
@@ -36,7 +35,7 @@ def signup(user: UserType, settings: Settings):
     if not exists:
         hash = pbkdf2_sha256.hash(user['password'])
         createdUser = User(
-            email=email, 
+            email=email,
             password=hash,
             locality=user['locality'],
             street_address=user['street_address'],
