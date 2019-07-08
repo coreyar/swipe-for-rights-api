@@ -1,25 +1,29 @@
 version: '3'
 
 services:
-  db:
-    image: mongo:3.0
+  mongo:
+    image: mongo:latest
+    command: mongod --storageEngine wiredTiger
     ports:
       - "27017:27017"
-
-  api:
-    build: .
-    command: ["run", "--host", "0.0.0.0"]
-    depends_on:
-      - db
+    restart: always
     environment:
-      - DEBUG=True
-      - OPEN_STATES_API_KEY
-      # Just a dummy key
-      - SWIPE_FOR_RIGHTS_JWT_SECRET_KEY='QXp4Z83.%2F@JBiaPZ8T9YDwoasn[dn)cZ=fE}KqHMJPNka3QyPNq^KnMqL^oCsU9BC?.f9,oF2.2t4oN?[g%iq89(+'
-      - SWIPE_FOR_RIGHTS_MONGO_URL=mongodb://db:27017/swipe_for_rights
-    ports:
-      - "8080:8080"
+      MONGO_INITDB_ROOT_USERNAME: swipe4rights
+      MONGO_INITDB_ROOT_PASSWORD: password
+  python:
+    build:
+      context: ./
+      dockerfile: Dockerfile-python
+    command: sh -c "pipenv run /opt/app/backend/manage.py migrate && pipenv run /opt/app/backend/manage.py runserver 0.0.0.0:8000"
+    stdin_open: true
+    tty: true
     volumes:
-      - "./swipe_for_rights_api:/app/swipe_for_rights_api"
-      - "./app.py:/app/app.py"
-      - "./tests:/app/tests"
+      - ./:/opt/app/
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    environment:
+      - LC_ALL=C.UTF-8
+      - LANG=C.UTF-8
+      - DOCKER=1
