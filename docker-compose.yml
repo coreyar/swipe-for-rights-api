@@ -14,7 +14,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile-python
-    command: sh -c "pipenv run /opt/app/backend/manage.py migrate && pipenv run /opt/app/backend/manage.py runserver 0.0.0.0:8000"
+    command: sh -c "pipenv run /opt/app/manage.py migrate && pipenv run /opt/app/manage.py runserver 0.0.0.0:8000"
     stdin_open: true
     tty: true
     volumes:
@@ -22,7 +22,7 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - postgres
+      - mongo
     environment:
       - LC_ALL=C.UTF-8
       - LANG=C.UTF-8

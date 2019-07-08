@@ -136,10 +136,12 @@ DATABASES = {
 if IS_DOCKER:
     DATABASES = {
         'default': {
-            'ENGINE': 'django',
+            'ENGINE': 'djongo',
             'NAME': 'swipe4rights',
+            'USER': 'swipe4rights',
             'PASSWORD': 'password',
             'HOST': 'mongo',
+            'PORT': 27017,
         }
     }
 elif (STAGING or PRODUCTION) and not CIRCLE_CI:
