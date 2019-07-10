@@ -1,0 +1,2 @@
+web: cd backend && newrelic-admin run-program gunicorn swipe4rights.wsgi:application -b "0.0.0.0:$PORT" -w 3 --pythonpath=swipe4rights -k gevent
+worker: cd backend && celery worker -B --app swipe4rights

@@ -1,0 +1,39 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "==2.0.4"
+djangorestframework = "==3.8.2"
+dj-database-url = "==0.4.0"
+django-cors-headers = "==2.1.0"
+"flake8" = "==3.7.7"
+raven = "==6.7.0"
+coverage = "==4.5.1"
+codeclimate-test-reporter = "==0.1.2"
+"psycopg2-binary" = "==2.8.2"
+gunicorn = "==19.4.5"
+"boto3" = "==1.7.40"
+boto = "==2.48.0"
+botocore = "==1.10.40"
+mailchimp = "==2.0.9"
+celery = "==3.1.25"
+django-celery = "==3.2.1"
+django-redis = "==4.5.0"
+django-storages = "==1.7.1"
+newrelic = "==4.18.0.118"
+gevent = "==1.4.0"
+greenlet = "==0.4.15"
+sentry-sdk = "==0.7.1"
+pyopenstates = "==1.2.0"
+django-extensions = "==2.1.9"
+djongo = "==1.2.33"
+dnspython = "==1.16.0"
+django-rest-swagger = "==2.2.0"
+
+[dev-packages]
+mypy = "==0.701"
+
+[requires]
+python_version = "3.6"

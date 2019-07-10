@@ -1,0 +1,19 @@
+FROM python:3.6.5
+
+# Install pipenv
+RUN pip install pipenv
+
+RUN apt-get update
+RUN apt-get --yes --force-yes install poppler-utils
+
+# Required for pipenv to build properly
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+
+# This is necessary because of this open issue - https://github.com/pypa/pipenv/issues/1328
+
+WORKDIR /opt/app
+COPY Pipfile /opt/app/Pipfile
+RUN pipenv install --skip-lock
+
+EXPOSE 8000
