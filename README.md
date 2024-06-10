@@ -38,3 +38,8 @@ This also prefers [`setup.cfg` to store package information](http://setuptools.r
 
 ## License
 [MIT](LICENSE) © 2018 Corey Rice
+### Infrastructure model
+![Infrastructure main model](.infragenie/infrastructure_main_model.svg)
+- [python component model](.infragenie/python_component_model.svg)
+
+---
